@@ -82,4 +82,68 @@ describe("VaultStorageService (File System Access API Wrapper)", () => {
       expect(files).toContain("SolidJS.md");
     }
   });
+
+  it("[Stream Reader] nên đếm và đọc chính xác số lượng file .md trong Vault", async () => {
+    const openResult = await storageService.openVault();
+    expect(openResult.success).toBe(true);
+
+    if (openResult.success) {
+      const files: string[] = [];
+      for await (const fileHandle of storageService.scanMarkdownFiles(
+        openResult.handle as unknown as FileSystemDirectoryHandle,
+      )) {
+        files.push(fileHandle.name);
+      }
+
+      expect(files).toHaveLength(2);
+      expect(files).toContain("Architecture.md");
+      expect(files).toContain("SolidJS.md");
+    }
+  }); // <-- CHÚ Ý: Phải có dấu }); ở đây để đóng test case Stream Reader cũ!
+
+  // --- BẮT ĐẦU 2 TEST CASE MỚI BỔ SUNG ---
+
+  it("[Error Handling] nên trả về lỗi UNKNOWN_ERROR khi openVault gặp ngoại lệ không xác định (như lỗi phần cứng/ổ cứng)", async () => {
+    // Giả lập một lỗi không phải do người dùng hủy (mô phỏng lỗi ổ cứng bị ngắt kết nối)
+    fsMocks.showDirectoryPickerMock.mockRejectedValueOnce(new Error("Fatal Disk Failure"));
+
+    const result = await storageService.openVault();
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.code).toBe("UNKNOWN_ERROR");
+      expect(result.error.message).toContain("Fatal Disk Failure");
+    }
+  });
+
+  it("[Stream Reader] nên tự động bỏ qua các file không phải .md (như hình ảnh .png, file hệ thống .DS_Store)", async () => {
+    // 1. Thêm các file rác phi-markdown vào thư mục gốc trong RAM
+    const { MockFileSystemFileHandle } = await import("../mocks/fs-access-api");
+    const mockImage = new MockFileSystemFileHandle("architecture.png", "fake image binary");
+    const mockSystemFile = new MockFileSystemFileHandle(".DS_Store", "system config");
+    const mockTextFile = new MockFileSystemFileHandle("todo.txt", "not a markdown file");
+
+    fsMocks.mockRoot.addChild(mockImage);
+    fsMocks.mockRoot.addChild(mockSystemFile);
+    fsMocks.mockRoot.addChild(mockTextFile);
+
+    // 2. Mở vault và quét stream
+    const openResult = await storageService.openVault();
+    expect(openResult.success).toBe(true);
+
+    if (openResult.success) {
+      const files: string[] = [];
+      for await (const fileHandle of storageService.scanMarkdownFiles(
+        openResult.handle as unknown as FileSystemDirectoryHandle,
+      )) {
+        files.push(fileHandle.name);
+      }
+
+      // 3. Kiểm chứng: Stream reader chỉ lấy đúng 2 file .md cũ, bỏ qua hoàn toàn 3 file rác vừa thêm
+      expect(files).toHaveLength(2);
+      expect(files).not.toContain("architecture.png");
+      expect(files).not.toContain(".DS_Store");
+      expect(files).not.toContain("todo.txt");
+    }
+  });
 });
