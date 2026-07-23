@@ -2,7 +2,27 @@
 **Project Name:** Visual "Second Brain" – Local-First Markdown Knowledge Base & Graph Explorer  
 **Document Owner:** Senior / Staff Frontend Architect  
 **Version:** 1.0.0-MVP  
-**Status:** Approved for Engineering Implementation  
+**Status:** Approved for Engineering Implementation — In Development (Sprint 1–2)
+
+> 📘 Xem thêm: [Hướng dẫn sử dụng](./USER_GUIDE.md) dành cho người dùng cuối · [README dự án](../README.md) dành cho developer.
+
+---
+
+## 0. Tình trạng triển khai hiện tại (Implementation Status Snapshot)
+
+Bảng dưới đây đối chiếu Scope Matrix ở [Phần 3](#part-3-implementation-plan--scope-matrix) với mã nguồn thực tế trong repo tại thời điểm cập nhật tài liệu này, nhằm giúp đội ngũ kỹ thuật nắm chính xác phần nào đã hoàn thiện, phần nào đang dở dang.
+
+| Module | Thành phần mã nguồn | Trạng thái |
+| --- | --- | --- |
+| Storage & FS Layer | `src/storages/fs-wrapper.ts` (`VaultStorageService`), `src/storages/db.ts` (Dexie cache) | ✅ Hoàn thiện tầng lõi + unit test (`tests/storages/fs-wrapper.test.ts`) |
+| AST & Indexing Worker | `src/workers/ast.worker.ts`, `src/workers/parser.ts` | ✅ Hoàn thiện parser Regex trích xuất Title/Links/Tags |
+| Kết nối UI ⇄ Vault thật | `src/App.tsx` | 🚧 Đang dùng dữ liệu mẫu (`sampleNotes`) để dựng khung UI; chưa gọi `VaultStorageService.openVault()` từ giao diện |
+| Editor (CodeMirror 6 + WYSIWYG nhẹ) | `src/components/Editor/CodeMirrorEditor.tsx`, `plugins/wysiwygPlugin.ts` | ✅ Hoạt động — nhận diện H1, in đậm, trigger `[[` |
+| Search Engine (Suggestion/Backlinks) | `src/workers/search.engine.ts` | ✅ Engine lõi hoàn thiện (indexing, backlink HashMap O(1)) |
+| Search Engine (Full-text `Cmd+K`) | `src/workers/fulltext.engine.ts` (MiniSearch) | ✅ Hoạt động, tích hợp trong `SearchModal.tsx` |
+| Graph View (PixiJS WebGL2 + Physics Worker) | `src/components/Graph/GraphView.tsx`, `src/workers/physics.worker.ts`, `physics.engine.ts` | ✅ Hoạt động, có fallback an toàn khi thiếu GPU/SharedArrayBuffer |
+| Backlinks Panel (UI hiển thị) | — | 🚧 Chưa có component UI riêng, engine đã sẵn sàng |
+| File Watcher / Multi-vault / Export-Import | — | ⏳ Chưa triển khai (Should-have / Nice-to-have) |
 
 ---
 
