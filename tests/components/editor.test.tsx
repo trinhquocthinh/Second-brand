@@ -18,7 +18,7 @@ describe('CodeMirror 6 WYSIWYG Editor Component', () => {
         render(() => (
             <CodeMirrorEditor
                 initialValue={initialContent}
-                onChange={mockOnChange}
+                onChange={mockOnChange as any}
             />
         ));
 
@@ -32,7 +32,7 @@ describe('CodeMirror 6 WYSIWYG Editor Component', () => {
         render(() => (
             <CodeMirrorEditor
                 initialValue="Hello"
-                onChange={mockOnChange}
+                onChange={mockOnChange as any}
             />
         ));
 
@@ -56,7 +56,7 @@ describe('CodeMirror 6 WYSIWYG Editor Component', () => {
         render(() => (
             <CodeMirrorEditor
                 initialValue={markdownContent}
-                onChange={mockOnChange}
+                onChange={mockOnChange as any}
             />
         ));
 
@@ -73,7 +73,7 @@ describe('CodeMirror 6 WYSIWYG Editor Component', () => {
         render(() => (
             <CodeMirrorEditor
                 initialValue=""
-                onChange={mockOnChange}
+                onChange={mockOnChange as any}
                 onTriggerLink={mockOnTriggerLink}
             />
         ));

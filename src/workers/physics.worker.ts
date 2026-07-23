@@ -8,8 +8,8 @@ self.onmessage = (event: MessageEvent<PhysicsWorkerRequest>) => {
 
   try {
     if (type === "INIT_PHYSICS") {
-      const { notes, sharedBuffer } = payload;
-      engine.init(notes, sharedBuffer);
+      const { nodes, sharedBuffer } = payload;
+      engine.init(nodes, sharedBuffer);
 
       const response: PhysicsWorkerResponse = {
         type: "PHYSICS_READY",

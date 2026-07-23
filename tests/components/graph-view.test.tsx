@@ -21,7 +21,7 @@ describe('WebGL2 PixiJS Force-Directed Graph View Component', () => {
         render(() => (
             <GraphView
                 notes={sampleNotes}
-                onNodeClick={mockOnNodeClick}
+                onNodeClick={mockOnNodeClick as any}
             />
         ));
 
@@ -38,7 +38,7 @@ describe('WebGL2 PixiJS Force-Directed Graph View Component', () => {
         render(() => (
             <GraphView
                 notes={sampleNotes}
-                onNodeClick={mockOnNodeClick}
+                onNodeClick={mockOnNodeClick as any}
             />
         ));
 
@@ -57,7 +57,7 @@ describe('WebGL2 PixiJS Force-Directed Graph View Component', () => {
         render(() => (
             <GraphView
                 notes={sampleNotes}
-                onNodeClick={mockOnNodeClick}
+                onNodeClick={mockOnNodeClick as any}
             />
         ));
 

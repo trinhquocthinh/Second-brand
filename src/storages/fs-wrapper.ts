@@ -26,7 +26,7 @@ export class VaultStorageService {
 
     try {
       // 2. Kích hoạt hộp thoại xin quyền đọc/ghi ổ cứng từ Native Browser
-      const handle = await window.showDirectoryPicker();
+      const handle = await (window as any).showDirectoryPicker();
 
       // 3. Cache handle xuống IndexedDB cho các phiên làm việc sau
       await vaultCacheDB.saveHandle(handle);

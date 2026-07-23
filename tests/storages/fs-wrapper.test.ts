@@ -42,8 +42,8 @@ describe("VaultStorageService (File System Access API Wrapper)", () => {
     // Kiểm chứng hệ thống không bị crash và trả về Error state chuẩn hóa
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.code).toBe("PERMISSION_DENIED");
-      expect(result.error.message).toContain("Người dùng đã từ chối cấp quyền");
+      expect((result as any).error.code).toBe("PERMISSION_DENIED");
+      expect((result as any).error.message).toContain("Người dùng đã từ chối cấp quyền");
     }
   });
 
@@ -57,8 +57,8 @@ describe("VaultStorageService (File System Access API Wrapper)", () => {
     // Kiểm chứng
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.code).toBe("BROWSER_NOT_SUPPORTED");
-      expect(result.error.message).toContain("Trình duyệt của bạn không hỗ trợ File System Access API");
+      expect((result as any).error.code).toBe("BROWSER_NOT_SUPPORTED");
+      expect((result as any).error.message).toContain("Trình duyệt của bạn không hỗ trợ File System Access API");
     }
   });
 
@@ -111,8 +111,8 @@ describe("VaultStorageService (File System Access API Wrapper)", () => {
 
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.code).toBe("UNKNOWN_ERROR");
-      expect(result.error.message).toContain("Fatal Disk Failure");
+      expect((result as any).error.code).toBe("UNKNOWN_ERROR");
+      expect((result as any).error.message).toContain("Fatal Disk Failure");
     }
   });
 

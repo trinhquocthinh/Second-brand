@@ -1,7 +1,7 @@
 // src/components/Graph/GraphView.tsx
 import { onMount, onCleanup } from 'solid-js';
 import * as PIXI from 'pixi.js';
-import { NoteMetadata } from '@/workers/types';
+import type { NoteMetadata } from '@/workers/types';
 import { FLOATS_PER_NODE } from '@/workers/physics.types';
 
 export interface GraphViewProps {
@@ -32,6 +32,7 @@ export const GraphView = (props: GraphViewProps) => {
         // 2. KHỞI TẠO PHYSICS WORKER (Defensive Check cho JSDOM/Happy-DOM)
         if (typeof Worker !== 'undefined') {
             try {
+                // Sử dụng cú pháp tường minh chuẩn Vite Worker Module
                 worker = new Worker(new URL('../../workers/physics.worker.ts', import.meta.url), {
                     type: 'module',
                 });
