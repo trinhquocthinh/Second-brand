@@ -52,7 +52,7 @@
   "lint-staged": {
     "src/**/*.{ts,tsx}": [
       "prettier --write",
-      "eslint --max-warnings=0",
+      "eslint --fix --max-warnings=0",
       "vitest related --run"
     ],
     "src/**/*.{css,md,json}": [

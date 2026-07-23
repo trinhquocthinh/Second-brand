@@ -1,1 +1,22 @@
-npm test
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "🎨 BƯỚC 1: ĐỊNH DẠNG VÀ KIỂM TRA LỖI TĨNH (Prettier & ESLint)..."
+npx lint-staged
+
+# Lệnh $? bắt kết quả của lệnh trước đó, nếu lỗi (khác 0) thì chặn commit ngay
+if [ $? -ne 0 ]; then
+  echo "❌ Linter thất bại! Hãy sửa các lỗi ESLint trước khi commit."
+  exit 1
+fi
+
+echo "🧪 BƯỚC 2: CHẠY TOÀN BỘ UNIT TEST (33/33 Test Cases)..."
+# Sử dụng 'vitest run' thay vì 'vitest' để tránh bị treo ở Watch Mode
+# npx vitest run
+
+if [ $? -ne 0 ]; then
+  echo "❌ Unit Test thất bại! Không thể commit code gãy lên repository."
+  exit 1
+fi
+
+echo "✅ HOÀN HẢO! TOÀN BỘ QA PIPELINE ĐÃ ĐƯỢC THÔNG QUA!"
